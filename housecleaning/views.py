@@ -57,6 +57,40 @@ class ServiceDayOfWeeksView(View):
 class HousecleaningReserveInfo(View):
     @login_decorator
     def get(self, request):
+        """house Reserve onetime GET
+
+            청소 예약 확인 (1회)
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            params:
+                - **kwargs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - dict
+                {
+                    "hr_orders": [{
+                        "id": 98,
+                        "name": "pang",
+                        "reserve_cycle": "1회",
+                        "service_duration": "8시간",
+                        "starting_time": "오전9시",
+                        "service_start_date": "2020-07-28",
+                        "reserve_location": "서울시송파구",
+                        "have_pet": 1,
+                        "status": "예약완료"
+                    }]
+
+                }
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         hr_user = HousecleaningReservation.objects.select_related(
             'USER',
             'SERVICE_STARTING_TIME',
@@ -89,6 +123,26 @@ class HousecleaningReserveInfo(View):
 class OnetimeReserve(View):
     @login_decorator
     def post(self, request):
+        """house Reserve onetime POST
+
+            청소 예약 (1회)
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            params:
+                - **kwargs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - {"message": "SUCCESS"}
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         data = json.loads(request.body)
         user = User.objects.get(id=request.user.id)
 
