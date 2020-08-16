@@ -14,6 +14,22 @@ from .models import User
 
 
 def validate_input(data):
+    """Signup
+
+        유효성 검사
+
+        Authors:
+            Inyong Hwang <hiyv7272@gmail.com>
+
+        params:
+            - **kwargs
+
+        return:
+            - None or boolean
+
+        History:
+            - [2020-07-28 황인용] refactoring
+    """
     if len(data['password']) < 8:
         return JsonResponse({'message': 'INVALID_PASSWORD'}, status=400)
 
@@ -31,6 +47,26 @@ def validate_input(data):
 
 class SignUpView(View):
     def post(self, request):
+        """SignUp
+
+            회원 가입
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            param:
+                - **kwagrs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - None
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         data = json.loads(request.body)
 
         try:
@@ -58,6 +94,27 @@ class SignUpView(View):
 
 class SignInView(View):
     def post(self, request):
+        """SignIn
+
+            로그
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            param:
+                - **kwagrs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - dict
+                {'access_token': 'token'}
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         data = json.loads(request.body)
 
         try:
@@ -77,6 +134,35 @@ class SignInView(View):
 class UserProfileView(View):
     @login_decorator
     def get(self, request):
+        """UserProfile get
+
+            유저 정보 확인
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            param:
+                - **kwagrs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - dict
+                {
+                    "User_Profile": {
+                        "name": "panginyong",
+                        "email": "test@gmail.com",
+                        "mobile_number": "01012345678",
+                        "regist_datetime": "2020-07-28T23:47:59Z",
+                        "update_datetime": "2020-07-28T04:55:05Z"
+                    }
+                }
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         user = User.objects.get(id=request.user.id)
 
         try:
@@ -95,6 +181,16 @@ class UserProfileView(View):
 
 class KakaologinView(View):
     def get(self, request):
+        """kakao Oauth get
+
+            카카오 연동 get
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         kakao_access_code = request.GET.get('code', None)
         print('1', kakao_access_code)
         url = 'https://kauth.kakao.com/oauth/token'
@@ -120,6 +216,16 @@ class KakaologinView(View):
         return HttpResponse(f"""{kakao_response.text}""")
 
     def post(self, request):
+        """kakao Oauth post
+
+            카카오 연동 post
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         try:
             kakao_token = request.headers["Authorization"]
             print('kt', kakao_token)
