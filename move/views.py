@@ -10,6 +10,26 @@ from move.models import MoveReservation, MoveCategory
 class MoveReserve(View):
     @login_decorator
     def post(self, request):
+        """Move Reserve POST
+
+            이사 예약
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            params:
+                - **kwargs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - {"message": "SUCCESS"}
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         data = json.loads(request.body)
 
         if int(data['move_category_id']) > 3:
@@ -41,6 +61,36 @@ class MoveReserve(View):
 
     @login_decorator
     def get(self, request):
+        """Move Reserve GET
+
+            이사 예약 확인
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            params:
+                - **kwargs
+
+            Response:
+                - 200
+                - 400
+
+            return:
+                - dict
+                {
+                    "move_orders": [{
+                        "id": 3,
+                        "name": "pang",
+                        "move_category": "사무실이사",
+                        "addresss": "서울시 송파구",
+                        "phone_number": "01033334444"
+                    }]
+
+                }
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         move_user = MoveReservation.objects.select_related(
             'USER',
             'MOVE_CATEGORY').filter(USER_id=request.user.id).order_by('id')
@@ -65,6 +115,41 @@ class MoveReserve(View):
 
 class MoveCategoryInfo(View):
     def get(self, request):
+        """Move Category GET
+
+            이사 종류
+
+            Authors:
+                Inyong Hwang <hiyv7272@gmail.com>
+
+            params:
+                - **kwargs
+
+            Response:
+                - 200
+
+            return:
+                - dict
+                {
+                    "move_categories": [
+                        {
+                            "id": 1,
+                            "name": "가정이사"
+                        },
+                        {
+                            "id": 3,
+                            "name": "사무실이사"
+                        },
+                        {
+                            "id": 2,
+                            "name": "소형이사"
+                        }
+                    ]
+                }
+
+            History:
+                - [2020-07-28 황인용] refactoring
+        """
         move_categories = list(MoveCategory.objects.values())
 
         return JsonResponse({'move_categories': move_categories}, status=200)
