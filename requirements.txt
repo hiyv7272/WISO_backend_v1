@@ -6,7 +6,7 @@ Django==3.0.7
 django-cors-headers==3.2.0
 mysql-connector-python==8.0.18
 mysqlclient==1.4.6
-protobuf==3.11.1
+protobuf==3.18.3
 pycparser==2.19
 PyJWT==1.7.1
 pytz==2019.3
